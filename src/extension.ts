@@ -7,8 +7,8 @@ import * as vscode from 'vscode';
  {
 	// Record selection on blur and restore when focused back again
 	let windowFocused = false;
-	let selectionsOnBlur: vscode.Selection[] | undefined = vscode.window.activeTextEditor?.selections;
-	let lastUri: vscode.Uri | undefined = vscode.window.activeTextEditor?.document.uri;
+	let selectionsOnBlur: vscode.Selection[] | undefined = undefined;
+	let lastUri: vscode.Uri | undefined = undefined;
 	context.subscriptions.push(vscode.window.onDidChangeWindowState((e: vscode.WindowState): any => {
 		windowFocused = e.focused;
 		if (!windowFocused)
@@ -24,6 +24,7 @@ import * as vscode from 'vscode';
 			{
 				if (lastUri === e.textEditor.document.uri)
 					e.textEditor.selections = selectionsOnBlur;
+				lastUri = undefined;
 			}
 		}
 	}));
